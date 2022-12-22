@@ -48,6 +48,9 @@ my_data_row = my_cur.fetchone()
 streamlit.text("Hello from Snowflake:")
 streamlit.text(my_data_row)
 
+#don't run anything past here while we troubleshoot
+streamlit.stop()
+
 #Get the data from fruit_lost_list table
 #my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
 #my_cur = my_cnx.cursor()
