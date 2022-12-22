@@ -61,22 +61,27 @@ my_data_row = my_cur.fetchone()
 streamlit.text("Hello from Snowflake:")
 streamlit.text(my_data_row)
 
-#don't run anything past here while we troubleshoot
-streamlit.stop()
+streamlit.header("The fruit load list contains:")
+#snowflake-related functions
+def get_fruit_load_list():
+    with my_cnx.cursor() as my_cur:
+        my_cur.execute("select * from fruit_load_list")
+        #my_data_row = my_cur.fetchone()
+        return my_cur.fetchall()    
 
-#Get the data from fruit_lost_list table
-#my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-#my_cur = my_cnx.cursor()
-my_cur.execute("select * from fruit_load_list")
-#my_data_row = my_cur.fetchone()
-my_data_rows = my_cur.fetchall()
-streamlit.text("The fruit load list contains:")
-#streamlit.text(my_data_row)
-streamlit.dataframe(my_data_rows)
+#Add a button to load the fruit
+if streamlit.button('Get Fruit Load List'):
+    #Get the data from fruit_lost_list table
+    my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+    my_data_rows = get_fruit_load_list()
+    streamlit.dataframe(my_data_rows)
 
 #Allow the user to add the fruit to the list
 add_my_fruit = streamlit.text_input("What fruit would you like to add?", "jackfruit")
 streamlit.write("Thanks for addding "+ add_my_fruit)
+
+#don't run anything past here while we troubleshoot
+streamlit.stop()
 
 #This will not work correctly but just go with the flow right now!
 #Issue with the control flow
