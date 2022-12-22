@@ -28,20 +28,25 @@ streamlit.dataframe(fruits_to_show)
 
 #New section to disaply fruityvice api response
 streamlit.header('Fruityvice Fruit Advice!')
-
-#take fruit input from the user
-fruit_choice = streamlit.text_input("What fruit would you like information about?", 'kiwi')
-streamlit.write('The user entered:', fruit_choice)
-
-#import requests
-fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
-#streamlit.text(fruityvice_response)
-#streamlit.text(fruityvice_response.json())
-
-#take the json version of the response and normalize it
-fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
-#output it the screen as a table
-streamlit.dataframe(fruityvice_normalized)
+try:
+  
+  #take fruit input from the user
+  fruit_choice = streamlit.text_input("What fruit would you like information about?")
+  streamlit.write('The user entered:', fruit_choice)
+  
+  if not fruit_choice:
+    streamlit.error("Please select a fruit to get information.")
+  else:
+    #import requests
+    fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_choice)
+    #streamlit.text(fruityvice_response)
+    #streamlit.text(fruityvice_response.json())
+    #take the json version of the response and normalize it
+    fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+    #output it the screen as a table
+    streamlit.dataframe(fruityvice_normalized)
+ except URLError as e:
+  streamlit.error()
 
 #import snowflake.connector
 
