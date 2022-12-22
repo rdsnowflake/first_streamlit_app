@@ -49,9 +49,9 @@ streamlit.text("Hello from Snowflake:")
 streamlit.text(my_data_row)
 
 #Get the data from fruit_lost_list table
-my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
-my_cur = my_cnx.cursor()
-my_cnx.execute("select * from fruit_load_list")
+#my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
+#my_cur = my_cnx.cursor()
+my_cur.execute("select * from fruit_load_list")
 my_data_row = my_cur.fetchone()
 streamlit.text("The fruit load list contains:")
 streamlit.text(my_data_row)
